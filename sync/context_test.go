@@ -20,7 +20,7 @@ func GetUser(ctx context.Context) {
 func TestContext(t *testing.T) {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "name", UserInfo{Name: "hahsha"})
-	GetUser(ctx)
+	go GetUser(ctx)
 }
 
 func GetIp(ctx context.Context) (ip string, err error) {
