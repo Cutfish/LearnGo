@@ -30,14 +30,4 @@ func TestReflect2(t *testing.T) {
 	// key()会返回map的键反射类型
 	fmt.Println(rType.Key())
 	fmt.Println(rType.Elem().Kind())
-
-	// 获取结构体反射类型
-	rType := reflect.TypeOf([]int{}).Elem()
-	// 输出方法个数
-	fmt.Println(rType.NumMethod())
-	// 遍历输出方法信息
-	for i := 0; i < rType.NumMethod(); i++ {
-		method := rType.Method(i)
-		fmt.Println(method.Index, method.Name, method.Type, method.IsExported())
-	}
 }

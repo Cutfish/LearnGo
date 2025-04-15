@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"reflect"
+	"time"
 )
 
 func main() {
-	str := "hello world!"
-	reflectType := reflect.TypeOf(str)
-	fmt.Println(reflectType)
+	go func(i int) {
+
+	}(2)
+	time.Sleep(time.Second * 2)
 }
