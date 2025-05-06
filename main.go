@@ -1,12 +1,9 @@
 package main
 
-import (
-	"time"
-)
+import "fmt"
+
+var a = 1
 
 func main() {
-	go func(i int) {
-
-	}(2)
-	time.Sleep(time.Second * 2)
+	fmt.Println(a)
 }

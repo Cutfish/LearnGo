@@ -4,6 +4,9 @@
         "*.ndjson": "jsonl",
         "*.dbclient-js": "javascript",
         "*.proto": "proto3",
-        "vector": "cpp"
-    }
+        "vector": "cpp",
+        "*.tcc": "cpp",
+        "ostream": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

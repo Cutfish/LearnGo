@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -11,7 +12,8 @@ import (
 func TestMap(t *testing.T) {
 	var hashmap sync.Map
 	var wg sync.WaitGroup
-
+	var a int64
+	atomic.StoreInt64(&a, 12)
 	for i := range 100 {
 		fmt.Println("goroutinue id is", i)
 
@@ -25,7 +27,6 @@ func TestMap(t *testing.T) {
 	wg.Wait()
 	value, ok := hashmap.Load(1)
 	fmt.Println("value is", value, "ok is", ok)
-
 	ac, o12k := hashmap.LoadOrStore(2, "1212121")
 	ac1, ok21 := hashmap.LoadOrStore("sasas", 2)
 	ac2, o21k := hashmap.LoadOrStore(true, "1212121")
