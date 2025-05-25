@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 )
 
 func producer(ch chan int, wg *sync.WaitGroup) {
@@ -11,24 +10,23 @@ func producer(ch chan int, wg *sync.WaitGroup) {
 	for i := 0; i < 10; i++ {
 		ch <- i
 		fmt.Println("Produced:", i)
-		time.Sleep((100 * time.Millisecond))
 	}
 }
 
-func consumer(ch chan int, done chan bool) {
+func consumer(ch chan int, wg *sync.WaitGroup) {
+	defer wg.Done()
 	for num := range ch {
 		fmt.Println("Consumed:", num)
-		time.Sleep((200 * time.Millisecond))
 	}
-	done <- true
 }
 
 func main() {
 	ch := make(chan int, 5)
-	done := make(chan bool)
 
+	wg1 := sync.WaitGroup{}
 	for i := 0; i < 3; i++ {
-		go consumer(ch, done)
+		wg1.Add(1)
+		go consumer(ch, &wg1)
 	}
 
 	wg := sync.WaitGroup{}
@@ -38,9 +36,9 @@ func main() {
 	}
 	wg.Wait()
 	close(ch)
+	fmt.Println("生产完毕！")
 
-	for i := 0; i < 3; i++ {
-		<-done
-	}
+	wg1.Wait()
+
 	fmt.Println("over.........")
 }

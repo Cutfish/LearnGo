@@ -5,40 +5,34 @@ import (
 	"sync"
 )
 
-// 构造协程池类
-type ITask interface {
-	Run()
+// 任务结构体
+type Task struct {
+	ID int
 }
 
-type taskStruct struct {
-	id int
+// Run 方法执行任务
+func (t Task) Run() {
+	fmt.Println("Task ID:", t.ID)
 }
 
-func (t taskStruct) Run() {
-	fmt.Println(t.id)
-}
-
-type IGoPool interface {
-	Start()
-	Schedule(task ITask)
-	WaitAndStop()
-}
-
-type gPool struct {
+// 协程池结构体
+type GoPool struct {
 	workers int
-	tasks   chan ITask
+	tasks   chan Task
 	wg      sync.WaitGroup
 }
 
-func NewPool(workers int) IGoPool {
-	return &gPool{
+// NewPool 创建一个新的协程池
+func NewPool(workers int) *GoPool {
+	return &GoPool{
 		workers: workers,
-		tasks:   make(chan ITask, workers),
+		tasks:   make(chan Task, workers),
 		wg:      sync.WaitGroup{},
 	}
 }
 
-func (p *gPool) Start() {
+// Start 启动协程池中的 worker
+func (p *GoPool) Start() {
 	for i := 0; i < p.workers; i++ {
 		p.wg.Add(1)
 		go func() {
@@ -50,27 +44,29 @@ func (p *gPool) Start() {
 	}
 }
 
-func (p *gPool) Schedule(task ITask) {
+// Schedule 将任务提交到协程池
+func (p *GoPool) Schedule(task Task) {
 	p.tasks <- task
-	fmt.Println("发送任务")
+	fmt.Println("发送任务:", task.ID)
 }
 
-func (p *gPool) WaitAndStop() {
+// WaitAndStop 等待所有任务完成并停止协程池
+func (p *GoPool) WaitAndStop() {
 	close(p.tasks)
 	p.wg.Wait()
 }
 
 func main() {
-	p := NewPool(5)
+	pool := NewPool(5)
+	pool.Start()
 
-	p.Start()
 	for i := 0; i < 100; i++ {
-		t := taskStruct{
-			id: i,
-		}
-		p.Schedule(t)
+		task := Task{ID: i}
+		pool.Schedule(task)
 	}
-	p.WaitAndStop()
+
+	pool.WaitAndStop()
+	fmt.Println("所有任务执行完毕，协程池已停止。")
 }
 
 // 简单协程池

@@ -1,12 +1,13 @@
 {
     "files.associations": {
-        "*.sqlbook": "sql",
-        "*.ndjson": "jsonl",
         "*.dbclient-js": "javascript",
         "*.proto": "proto3",
+        "*.sqlbook": "sql",
+        "*.ndjson": "jsonl",
         "vector": "cpp",
         "*.tcc": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "iostream": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
