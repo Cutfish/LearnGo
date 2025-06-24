@@ -42,3 +42,57 @@ func test3(ch chan string, gotime string) {
 		time.Sleep(3 * time.Second)
 	}
 }
+
+func TestSelectAndTick(t *testing.T) {
+	c := make(chan int, 1)
+	tick := time.Tick(time.Second)
+	for {
+		select {
+		case <-c:
+			fmt.Println("random 01")
+		case <-tick:
+			fmt.Println("tick")
+		case <-time.After(400 * time.Millisecond):
+			fmt.Println("timeout")
+		}
+	}
+}
+
+// nil的channel读写都会阻塞
+func TestNilChannel(t *testing.T) {
+	a := make(chan int)
+	b := make(chan int)
+	go func() {
+		for i := 0; i < 2; i++ {
+			select {
+			case a <- 1:
+				a = nil
+			case b <- 2:
+				b = nil
+			}
+		}
+	}()
+	fmt.Println(<-a)
+	fmt.Println(<-b)
+}
+
+// 对一个关闭的channel进行读操作，永远不会阻塞，如果缓冲区里没有数值了，那就返回对应的零值
+func TestClosedChannel(t *testing.T) {
+	a := make(chan int, 10)
+	b := make(chan int, 10)
+	close(a)
+	go func() {
+		for i := 0; i < 10; i++ {
+			select {
+			case <-a:
+				fmt.Println("a")
+			case b <- 1:
+				fmt.Println("b")
+			default:
+				fmt.Println("default")
+			}
+		}
+	}()
+	fmt.Println(len(a))
+	fmt.Println(len(b))
+}
