@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-// 测试WaitGroup
-func TestWaitG1roup(t *testing.T) {
+// 测试原子递增
+func TestAtomicAdd(t *testing.T) {
 	var count int32 = 0
 	var wg sync.WaitGroup
 
@@ -23,4 +23,12 @@ func TestWaitG1roup(t *testing.T) {
 
 	wg.Wait()
 	fmt.Println("最终 count =", count) // 预期输出 1000
+}
+
+func TestAtomicNum(t *testing.T) {
+	var a atomic.Int32
+	a.Store(1)
+	fmt.Println(a.Load())
+	b := a.Load()
+	fmt.Println(b)
 }
