@@ -20,11 +20,11 @@ func (p *Person) Rename(name string) *Person {
 }
 
 func main() {
-	p := Person{
+	p := &Person{
 		Age:  10,
 		Name: "fishqiudao",
 	}
 	p.AddAge().Rename("cutfish")
 
-	fmt.Println(p)
+	fmt.Println(*p)
 }
