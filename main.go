@@ -3,16 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	var s string
-	fmt.Scan(&s)
-	ret := ""
-	for i := 0; i < len(s); i++ {
-		if isDigit(s[i]) {
-			ret += "number"
-		} else {
-			ret += string(s[i])
-		}
-	}
+	const a = 1
+	fmt.Println(add1(a))
 }
 
 func isDigit(b byte) bool {
@@ -21,4 +13,8 @@ func isDigit(b byte) bool {
 		return true
 	}
 	return false
+}
+
+func add1(a int) int {
+	return a + 1
 }
