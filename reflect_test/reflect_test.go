@@ -31,3 +31,19 @@ func TestReflect2(t *testing.T) {
 	fmt.Println(rType.Key())
 	fmt.Println(rType.Elem().Kind())
 }
+
+func TestElem(t *testing.T) {
+	var x = 123
+	var y = &x
+	var z interface{} = y
+
+	v := reflect.ValueOf(&z)
+	vx := v.Elem()
+	fmt.Println(vx.Kind()) // interface
+
+	vy := vx.Elem()
+	fmt.Println(vy.Kind()) // ptr
+
+	vz := vy.Elem()
+	fmt.Println(vz.Kind()) // int
+}
